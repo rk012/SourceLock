@@ -71,4 +71,4 @@ could use it.
 
 The entire process can be visualized by the following diagram:
 
-![A diagram detailing the order of when each process accesses the resource](media/process diagram.svg "Process Diagram")
+![A diagram detailing the order of when each process accesses the resource](https://raw.githubusercontent.com/rk012/SourceLock/main/media/process%20diagram.svg "Process Diagram")
