@@ -14,7 +14,7 @@ open class ResourceDescriptor<T>(private var resource: T) {
         return ResourceWriter(this, resource)
     }
 
-    suspend fun open(action: (ResourceWriter<T>) -> Unit) {
+    suspend fun open(action: suspend (ResourceWriter<T>) -> Unit) {
         if (isAvailable) {
             locked = true
             val writer = getResourceWriter()
