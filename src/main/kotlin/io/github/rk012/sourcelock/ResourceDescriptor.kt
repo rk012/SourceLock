@@ -14,7 +14,7 @@ open class ResourceDescriptor<T>(private var resource: T) {
         return ResourceWriter(this, resource)
     }
 
-    suspend fun open(action: suspend (ResourceWriter<T>) -> Unit) {
+    suspend fun open(priority: Int = 0, action: suspend (ResourceWriter<T>) -> Unit) {
         if (isAvailable) {
             locked = true
             val writer = getResourceWriter()
@@ -27,7 +27,8 @@ open class ResourceDescriptor<T>(private var resource: T) {
         val writer = suspendCoroutine<ResourceWriter<T>> {
             queue.add (
                 ResourceQueueItem(
-                    it
+                    it,
+                    priority
                 )
             )
         }
@@ -53,6 +54,7 @@ open class ResourceDescriptor<T>(private var resource: T) {
         }
 
         locked = true
+        queue.sortByDescending { it.priority }
         val item = queue.removeAt(0)
         item.continuation.resume(getResourceWriter())
     }
